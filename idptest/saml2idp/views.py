@@ -46,7 +46,7 @@ def login_begin(request, *args, **kwargs):
     else:
         source = request.GET
     # Store these values now, because Django's login cycle won't preserve them.
-    request.session['SAMLRequest'] = source['SAMLRequest']
+    request.session['SAMLRequest'] = source.get('SAMLRequest')
     request.session['RelayState'] = source.get('RelayState')
     return redirect('login_process')
 
