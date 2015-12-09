@@ -23,12 +23,12 @@ def _get_attribute_statement(params):
     attr_list = []
     for name, value in attributes.items():
         subs = { 'ATTRIBUTE_NAME': name, 'ATTRIBUTE_VALUE': value }
-        one = template.substitute(subs)
+        one = template.substitute(subs).encode("utf8")
         attr_list.append(one)
     params['ATTRIBUTES'] = ''.join(attr_list)
     # Build complete AttributeStatement.
     stmt_template = string.Template(ATTRIBUTE_STATEMENT)
-    statement = stmt_template.substitute(params)
+    statement = stmt_template.substitute(params).encode("utf8")
     params['ATTRIBUTE_STATEMENT'] = statement
 
 def _get_in_response_to(params):
@@ -52,7 +52,7 @@ def _get_subject(params):
     Modifies the params dict.
     """
     template = string.Template(SUBJECT)
-    params['SUBJECT_STATEMENT'] = template.substitute(params)
+    params['SUBJECT_STATEMENT'] = template.substitute(params).encode("utf8")
 
 def _get_assertion_xml(template, parameters, signed=False):
     # Reset signature.
@@ -65,7 +65,7 @@ def _get_assertion_xml(template, parameters, signed=False):
     _get_subject(params) # must come before _get_attribute_statement()
     _get_attribute_statement(params)
 
-    unsigned = template.substitute(params)
+    unsigned = template.substitute(params).encode("utf8")
     logging.debug('Unsigned:')
     logging.debug(unsigned)
     if not signed:
@@ -74,7 +74,7 @@ def _get_assertion_xml(template, parameters, signed=False):
     # Sign it.
     signature_xml = get_signature_xml(unsigned, params['ASSERTION_ID'])
     params['ASSERTION_SIGNATURE'] = signature_xml
-    signed = template.substitute(params)
+    signed = template.substitute(params).encode("utf8")
 
     logging.debug('Signed:')
     logging.debug(signed)
@@ -107,7 +107,7 @@ def get_response_xml(parameters, signed=False):
     # Sign it.
     signature_xml = get_signature_xml(unsigned, params['RESPONSE_ID'])
     params['RESPONSE_SIGNATURE'] = signature_xml
-    signed = template.substitute(params)
+    signed = template.substitute(params).encode("utf8")
 
     logging.debug('Signed:')
     logging.debug(signed)
