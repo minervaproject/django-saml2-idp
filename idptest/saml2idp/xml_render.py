@@ -19,7 +19,7 @@ def _get_attribute_statement(params):
         params['ATTRIBUTE_STATEMENT'] = ''
         return
     # Build individual attribute list.
-    template = string.Template(ATTRIBUTE)
+    template = string.Template(ATTRIBUTE.encode("utf8"))
     attr_list = []
     for name, value in attributes.items():
         subs = { 'ATTRIBUTE_NAME': name, 'ATTRIBUTE_VALUE': value }
@@ -27,7 +27,7 @@ def _get_attribute_statement(params):
         attr_list.append(one)
     params['ATTRIBUTES'] = ''.join(attr_list)
     # Build complete AttributeStatement.
-    stmt_template = string.Template(ATTRIBUTE_STATEMENT)
+    stmt_template = string.Template(ATTRIBUTE_STATEMENT.encode("utf8"))
     statement = stmt_template.substitute(params).encode("utf8")
     params['ATTRIBUTE_STATEMENT'] = statement
 
@@ -51,7 +51,7 @@ def _get_subject(params):
     Insert Subject.
     Modifies the params dict.
     """
-    template = string.Template(SUBJECT)
+    template = string.Template(SUBJECT.encode("utf8"))
     params['SUBJECT_STATEMENT'] = template.substitute(params).encode("utf8")
 
 def _get_assertion_xml(template, parameters, signed=False):
@@ -96,7 +96,7 @@ def get_response_xml(parameters, signed=False):
     params['RESPONSE_SIGNATURE'] = ''
     _get_in_response_to(params)
 
-    template = string.Template(RESPONSE)
+    template = string.Template(RESPONSE.encode("utf8"))
     unsigned = template.substitute(params).encode("utf8")
 
     logging.debug('Unsigned:')

@@ -17,7 +17,7 @@ NOTE #3: I'm now leaning towards using lxml's E factory to do some of this.
     Compare how the other python/saml libraries are using lxml.
 """
 SIGNED_INFO = (
-    u'<ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">'
+    '<ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">'
         '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></ds:CanonicalizationMethod>'
         '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></ds:SignatureMethod>'
         '<ds:Reference URI="#${REFERENCE_URI}">'
@@ -31,7 +31,7 @@ SIGNED_INFO = (
     '</ds:SignedInfo>'
 )
 SIGNATURE = (
-    u'<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">'
+    '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">'
         '${SIGNED_INFO}'
     '<ds:SignatureValue>${RSA_SIGNATURE}</ds:SignatureValue>'
     '<ds:KeyInfo>'
@@ -44,20 +44,20 @@ SIGNATURE = (
 
 # Attributes and AttributeStatement
 ATTRIBUTE = (
-    u'<saml:Attribute Name="${ATTRIBUTE_NAME}">'
+    '<saml:Attribute Name="${ATTRIBUTE_NAME}">'
         '<saml:AttributeValue>${ATTRIBUTE_VALUE}</saml:AttributeValue>'
     '</saml:Attribute>'
 )
 
 ATTRIBUTE_STATEMENT = (
-    u'<saml:AttributeStatement>'
+    '<saml:AttributeStatement>'
     '${ATTRIBUTES}'
     '</saml:AttributeStatement>'
 )
 
 # Subject
 SUBJECT = (
-    u'<saml:Subject>'
+    '<saml:Subject>'
         '<saml:NameID Format="${SUBJECT_FORMAT}" SPNameQualifier="${SP_NAME_QUALIFIER}">'
         '${SUBJECT}'
         '</saml:NameID>'
@@ -71,7 +71,7 @@ SUBJECT = (
 
 # Minimal assertion for Google Apps:
 ASSERTION_GOOGLE_APPS = (
-    u'<saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" '
+    '<saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" '
             'ID="${ASSERTION_ID}" '
             'IssueInstant="${ISSUE_INSTANT}" '
             'Version="2.0">'
@@ -92,7 +92,7 @@ ASSERTION_GOOGLE_APPS = (
 
 # Minimal assertion for SalesForce:
 ASSERTION_SALESFORCE = (
-    u'<saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" '
+    '<saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" '
             'ID="${ASSERTION_ID}" '
             'IssueInstant="${ISSUE_INSTANT}" '
             'Version="2.0">'
@@ -117,7 +117,7 @@ ASSERTION_SALESFORCE = (
 
 # Minimal response:
 RESPONSE = (
-    u'<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" '
+    '<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" '
                     'Destination="${ACS_URL}" '
                     'ID="${RESPONSE_ID}" '
                     '${IN_RESPONSE_TO}'
