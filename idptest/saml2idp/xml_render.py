@@ -97,7 +97,7 @@ def get_response_xml(parameters, signed=False):
     _get_in_response_to(params)
 
     template = string.Template(RESPONSE)
-    unsigned = template.substitute(params).encode("utf8")
+    unsigned = template.substitute(params)
 
     logging.debug('Unsigned:')
     logging.debug(unsigned)
