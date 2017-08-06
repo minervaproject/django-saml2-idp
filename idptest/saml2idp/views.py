@@ -1,22 +1,18 @@
-# Python imports:
-import base64
 import logging
-import time
-import uuid
-# Django/other library imports:
+
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-# saml2idp app imports:
-import saml2idp_metadata
+
 import exceptions
 import metadata
 import registry
+import saml2idp_metadata
 import xml_signing
+
 
 def _generate_response(request, processor):
     """
@@ -26,14 +22,12 @@ def _generate_response(request, processor):
     try:
         tv = processor.generate_response()
     except exceptions.UserNotAuthorized:
-        return render_to_response('saml2idp/invalid_user.html',
-                                  context_instance=RequestContext(request))
+        return render(request, 'saml2idp/invalid_user.html')
 
-    return render_to_response('saml2idp/login.html', tv,
-                                context_instance=RequestContext(request))
+    return render(request, 'saml2idp/login.html', context=tv)
 
 def xml_response(request, template, tv):
-    return render_to_response(template, tv, mimetype="application/xml")
+    return render(request, template, context=tv, mimetype="application/xml")
 
 @csrf_exempt
 def login_begin(request, *args, **kwargs):
@@ -91,9 +85,7 @@ def logout(request):
     though it's technically not SAML 2.0).
     """
     auth.logout(request)
-    tv = {}
-    return render_to_response('saml2idp/logged_out.html', tv,
-                                context_instance=RequestContext(request))
+    return render(request, 'saml2idp/logged_out.html')
 
 @login_required
 @csrf_exempt
@@ -110,16 +102,14 @@ def slo_logout(request):
     #TODO: Format a LogoutResponse and return it to the browser.
     #XXX: For now, simply log out without validating the request.
     auth.logout(request)
-    tv = {}
-    return render_to_response('saml2idp/logged_out.html', tv,
-                               context_instance=RequestContext(request))
+    return render(request, 'saml2idp/logged_out.html')
 
 
 def descriptor(request):
     """
     Replies with the XML Metadata IDSSODescriptor.
     """
-    idp_config = saml2idp_metadata.SAML2IDP_CONFIG
+    config = saml2idp_metadata.SAML2IDP_CONFIG
     entity_id = config['issuer']
     slo_url = request.build_absolute_uri(reverse('logout'))
     sso_url = request.build_absolute_uri(reverse('login_begin'))
@@ -131,5 +121,4 @@ def descriptor(request):
         'sso_url': sso_url,
 
     }
-    return xml_response(request, 'saml2idp/idpssodescriptor.xml', tv,
-                                context_instance=RequestContext(request))
+    return xml_response(request, 'saml2idp/idpssodescriptor.xml', tv)
